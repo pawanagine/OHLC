@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <title>OHLC Query</title>
+    <script type="text/javascript">
+        const ws = new WebSocket('ws://localhost:8081');
+
+        ws.onopen = function () {
+            document.querySelector('#send').disabled = false;
+
+            document.querySelector('#send').addEventListener('click', function () {
+                ws.send("QUERY_OHLC");
+            });
+        };
+
+        ws.onmessage = function (msg) {
+            const data = JSON.parse(msg.data)
+            document.querySelector('#messages').innerHTML += `<div>${JSON.stringify(data, null, 2)}</div>`;
+        };
+    </script>
+</head>
+
+<body>
+    <h3>Query OHLC Data</h3>
+    <div>
+        <button id="send" disabled="true">Request</button>
+    </div>
+    <div id="messages">
+    </div>
+</body>
+
+</html>
